@@ -11,8 +11,12 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
+    "bee-queue": "^1.2.3",
+    "express": "^4.17.1",
     "pg": "^8.2.1",
     "pino": "^6.3.0",
+    "redis": "^3.0.2",
+    "redis-server": "^1.2.2",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
     "typeorm": "^0.2.24"
