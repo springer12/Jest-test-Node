@@ -1,12 +1,18 @@
 import "reflect-metadata";
 
+import Pino from "pino";
 import {createConnection} from "typeorm";
 import CommsEvent from "./entity/CommsEvent";
 
+const logger = Pino({name: "Zenner Comms Dispatch"});
+
+logger.info("Starting");
+
 (async () => {
+
     const conn = await createConnection();
 
-    console.log('PG connected');
+    logger.info('PG connected');
 
     const event = new CommsEvent();
 
@@ -18,5 +24,5 @@ import CommsEvent from "./entity/CommsEvent";
     await conn.manager.save(event);
 
     await conn.close();
-    console.log('PG connection closed.');
+    logger.info('PG connection closed.');
 })();
