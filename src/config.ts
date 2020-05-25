@@ -2,6 +2,8 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 import Doctor from './entity/Events';
 
+//just testing my username
+
 const typeOrmConfig: PostgresConnectionOptions = {
     type: "postgres",
     host: "localhost",

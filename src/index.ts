@@ -7,7 +7,7 @@ import Doctor from './entity/Events';
 
 (async () => {
     const conn = await createConnection(typeOrmConfig);
-    console.log('PG connected.');
+    console.log('PG connected');
 
     await conn.close();
     console.log('PG connection closed.');
