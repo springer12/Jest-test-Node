@@ -3,8 +3,8 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "postgres",
-  "database": "zenner-comms-microservice",
+  "password": "mysecretpassword",
+  "database": "oneoone",
   "synchronize": true,
   "logging": false,
   "entities": [

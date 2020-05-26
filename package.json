@@ -13,10 +13,12 @@
   },
   "dependencies": {
     "bee-queue": "^1.2.3",
+    "dotenv": "^8.2.0",
     "pg": "^8.2.1",
     "pino": "^6.3.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
+    "twilio": "^3.43.1",
     "typeorm": "^0.2.24"
   },
   "scripts": {
