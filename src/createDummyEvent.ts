@@ -1,11 +1,11 @@
 // Send a dummy message
 import BQ from "bee-queue"
 const bq = new BQ('subscriptions', 
-// {
-//     redis: {
-//         url: 'redis://whocares:3EPncOHbkhhDW5QAjGKObPyZBnBrXwdc@redis-10028.c124.us-central1-1.gce.cloud.redislabs.com:10028',        
-//     }
-// }
+{
+    // redis: {
+    //     url: 'redis://whocares:3EPncOHbkhhDW5QAjGKObPyZBnBrXwdc@redis-10028.c124.us-central1-1.gce.cloud.redislabs.com:10028',        
+    // }
+}
 );
 
 (async () => {
@@ -18,7 +18,7 @@ const bq = new BQ('subscriptions',
         console.log('queue now ready to start doing things');
         let job = bq.createJob({
             from: 'whatsapp:+13235082016',
-            to: 'whatsapp:+995557773417',
+            to: 'whatsapp:+995591978104',
             source: 'whatsapp',
             human: false,
             message: message,
