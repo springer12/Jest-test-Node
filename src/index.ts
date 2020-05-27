@@ -8,6 +8,10 @@ import { createConnection } from "typeorm"; // Database ORM
 // Services
 import {CommsEventService} from "./service/CommsEvent.service"
 
+//import Entity
+import CommsEvent from './entity/CommsEvent';
+
+
 (async () => {
     dotenv.config(); // Load vars
     const logger = Pino({name: "Zenner Comms Dispatch"});
@@ -21,6 +25,19 @@ import {CommsEventService} from "./service/CommsEvent.service"
     // existing events in db
     const events = await commsEventService.getAll();
     console.log(events.length, '<----length')
+
+    //add event in db
+    const myEvent = new CommsEvent();
+    myEvent.from = '+995591978104',
+    myEvent.to = '+995557773417',
+    myEvent.source = '111',
+    myEvent.human = true,
+    myEvent.result = '333',
+    myEvent.server = '4444',
+    myEvent.message = 'Helloween'
+   const addedEvent =  await commsEventService.addEvent(myEvent);
+   console.log(addedEvent, '<----added Event');
+
 
 
     const twilio = Twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
