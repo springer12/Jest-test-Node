@@ -3,24 +3,25 @@ import * as dotenv from "dotenv"; // Environment vars
 import Pino from "pino"; // Logging library
 import BQ from "bee-queue" // Queue management via Redis
 import Twilio from 'twilio'; // WhatsApp library
-import { createConnection } from "typeorm"; // Database ORM
 
 // Services
 import {CommsEventService} from "./service/CommsEvent.service"
+import { createTypeormConnection } from "./utils/createTypeormConnection";
 
 (async () => {
     dotenv.config(); // Load vars
     const logger = Pino({name: "Zenner Comms Dispatch"});
     logger.info("Starting");
 
-    const db = await createConnection();
+    // const db = await createConnection();
+    await createTypeormConnection();
     logger.info('PG connected');
 
     const commsEventService = new CommsEventService();
 
     // existing events in db
     const events = await commsEventService.getAll();
-    console.log(events.length, '<----length')
+    console.log(events.length, ' events are already registered in db')
 
 
     const twilio = Twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
