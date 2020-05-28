@@ -10,19 +10,18 @@ const bq = new BQ('subscriptions',
 
 (async () => {
     console.log("Ready");
-    let message = "Hello local";
+    let message = "Hello from Zenny";
     if (typeof process.argv[2] !== 'undefined') {
         message = process.argv[2];
     }
     bq.on('ready', async () => {
         console.log('queue now ready to start doing things');
         let job = bq.createJob({
-            from: 'whatsapp:+13235082016',
-            to: 'whatsapp:+995591978104',
-            source: 'whatsapp',
-            human: false,
-            message: message,
-            server: 'localhost'
+            to: 'nini.grigalashvili@gmail.com',
+            subject: 'some subject',
+            text: message,
+            html: '',
+            source: 'gmail'
         });
 
         await job.save();

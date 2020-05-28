@@ -21,8 +21,6 @@ import CommsEvent from './entity/CommsEvent';
     const logger = Pino({name: "Zenner Comms Dispatch"});
     logger.info("Starting");
 
-
-
     // const db = await createConnection();
     await createTypeormConnection();
     logger.info('PG connected');
@@ -31,32 +29,17 @@ import CommsEvent from './entity/CommsEvent';
     const whatsAppService = new WhatsAppService();
     const gmailService = new GmailService();
 
-    await gmailService.send({
-      subject: 'some sub',
-      html: '',
-      text: 'teext',
-      to: 'tamarimenteshashvili7@gmail.com'
-    })
+    // await gmailService.send({
+    //   subject: 'some sub',
+    //   html: '',
+    //   text: 'teext',
+    //   to: 'tamarimenteshashvili7@gmail.com'
+    // })
 
     // existing events in db
     const events = await commsEventService.getAll();
     console.log(events.length, ' events are already registered in db')
 
-    // //add event in db
-    // const myEvent = new CommsEvent();
-    // myEvent.from = '+995591978104',
-    // myEvent.to = '+995557773417',
-    // myEvent.source = '111',
-    // myEvent.human = true,
-    // myEvent.result = '333',
-    // myEvent.server = '4444',
-    // myEvent.message = 'Helloween'
-    // const addedEvent =  await commsEventService.addEvent(myEvent);
-    // console.log(addedEvent, '<----added Event');
-
-
-    const twilio = Twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
-    
     //creating instance of Queue class
     const queue_tamo = new BQ('subscriptions', {
       isWorker: true,
@@ -96,23 +79,45 @@ import CommsEvent from './entity/CommsEvent';
       logger.info(job.data, `Processing job ${job.id}`);
       
       let result = "SUCCESS";
-      
-      try {
-        let obj = {
-          from: job.data.from,
-          to: job.data.to,
-          body: job.data.message
-        }
-        let twilioResult = await whatsAppService.send(obj);
-        logger.info(twilioResult, `Sent message via Twiliio`)
-      } catch (err) {
-        result = "FAILED";
-        logger.error(err, `Twilio failed to send a message`);
-      }
-      
-      const event = await commsEventService.addEvent({...job.data, result});
 
+      if(job.data.source === 'whatsapp'){
+        try {
+          let obj = {
+            from: job.data.from,
+            to: job.data.to,
+            body: job.data.message
+          }
+          let twilioResult = await whatsAppService.send(obj);
+          logger.info(twilioResult, `Sent message via Twiliio`)
+        } catch (err) {
+          result = "FAILED";
+          logger.error(err, `Twilio failed to send a message`);
+        }
+      }
+      else if(job.data.source === 'gmail'){
+        try {
+          console.log(job.data)
+          let gmailObj = {
+            to: job.data.to,
+            subject: job.data.subject,
+            html: '',
+            text: job.data.text,
+          }
+          const gmailResult = await gmailService.send(gmailObj)
+          logger.info(gmailResult, `Sent message via Gmail`)
+        } catch (err) {
+          result = "FAILED";
+          logger.error(err, `nodemailer failed to send a message`);
+        }
+      }
+      else{
+        logger.error(`unknown source`);
+        result="FAIL"
+      }
+
+      const event = await commsEventService.addEvent({...job.data, result});
       logger.debug(`Added event record ${event.id} to database`);
+
       return "Success";
     });
 
