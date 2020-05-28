@@ -10,6 +10,7 @@ import { createTypeormConnection } from "./utils/createTypeormConnection";
 // Services
 import {CommsEventService} from "./service/CommsEvent.service";
 import {WhatsAppService} from "./service/WhatsApp.service";
+import {GmailService} from "./service/Gmail.service";
 
 //import Entity
 import CommsEvent from './entity/CommsEvent';
@@ -20,12 +21,22 @@ import CommsEvent from './entity/CommsEvent';
     const logger = Pino({name: "Zenner Comms Dispatch"});
     logger.info("Starting");
 
+
+
     // const db = await createConnection();
     await createTypeormConnection();
     logger.info('PG connected');
 
     const commsEventService = new CommsEventService();
     const whatsAppService = new WhatsAppService();
+    const gmailService = new GmailService();
+
+    await gmailService.send({
+      subject: 'some sub',
+      html: '',
+      text: 'teext',
+      to: 'tamarimenteshashvili7@gmail.com'
+    })
 
     // existing events in db
     const events = await commsEventService.getAll();

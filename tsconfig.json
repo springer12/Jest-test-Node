@@ -11,7 +11,7 @@
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
-        "lib": ["es2017", "esnext.asynciterable"],
+        "lib": ["es2017", "esnext.asynciterable", "dom"],
         "paths": {
             "*": ["node_modules/*", "src/types/*"]
         }
