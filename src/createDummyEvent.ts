@@ -18,7 +18,7 @@ const bq = new BQ('subscriptions',
         console.log('queue now ready to start doing things');
         let job = bq.createJob({
             from: 'whatsapp:+13235082016',
-            to: 'whatsapp:+995591978104',
+            to: 'whatsapp:+995557773417',
             source: 'whatsapp',
             human: false,
             message: message,

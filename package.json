@@ -29,10 +29,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "SET \"NODE_ENV=test\" && yarn build && jest dist/test",
+    "test": "SET \"NODE_ENV=test\" || NODE_ENV=test && yarn build && jest dist/test",
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/app.js",
-    "dev": "SET \"NODE_ENV=test\" && yarn build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\""
+    "dev": "SET \"NODE_ENV=test\" || NODE_ENV=test && yarn build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\""
   },
   "resolutions": {
     "tslib": "1.11.2"

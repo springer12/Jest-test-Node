@@ -4,9 +4,11 @@ import Pino from "pino"; // Logging library
 import BQ from "bee-queue" // Queue management via Redis
 import Twilio from 'twilio'; // WhatsApp library
 
+// Utils
+import { createTypeormConnection } from "./utils/createTypeormConnection";
+
 // Services
 import {CommsEventService} from "./service/CommsEvent.service";
-import { createTypeormConnection } from "./utils/createTypeormConnection";
 import {WhatsAppService} from "./service/WhatsApp.service";
 
 //import Entity
@@ -29,18 +31,17 @@ import CommsEvent from './entity/CommsEvent';
     const events = await commsEventService.getAll();
     console.log(events.length, ' events are already registered in db')
 
-    //add event in db
-    const myEvent = new CommsEvent();
-    myEvent.from = '+995591978104',
-    myEvent.to = '+995557773417',
-    myEvent.source = '111',
-    myEvent.human = true,
-    myEvent.result = '333',
-    myEvent.server = '4444',
-    myEvent.message = 'Helloween'
-   const addedEvent =  await commsEventService.addEvent(myEvent);
-   console.log(addedEvent, '<----added Event');
-
+    // //add event in db
+    // const myEvent = new CommsEvent();
+    // myEvent.from = '+995591978104',
+    // myEvent.to = '+995557773417',
+    // myEvent.source = '111',
+    // myEvent.human = true,
+    // myEvent.result = '333',
+    // myEvent.server = '4444',
+    // myEvent.message = 'Helloween'
+    // const addedEvent =  await commsEventService.addEvent(myEvent);
+    // console.log(addedEvent, '<----added Event');
 
 
     const twilio = Twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
