@@ -37,7 +37,7 @@ export class GmailService {
         } else {
           bcc = "elad@gozenner.com, daniel@gozenner.com";
         }
-console.log('hereee')
+        
         return await this.transporter.sendMail({
           from: "Flight Ops @ Zenner <ops@gozenner.com>",
           to: args.to,

@@ -2,7 +2,6 @@
 import * as dotenv from "dotenv"; // Environment vars
 import Pino from "pino"; // Logging library
 import BQ from "bee-queue" // Queue management via Redis
-import Twilio from 'twilio'; // WhatsApp library
 
 // Utils
 import { createTypeormConnection } from "./utils/createTypeormConnection";
@@ -28,13 +27,6 @@ import CommsEvent from './entity/CommsEvent';
     const commsEventService = new CommsEventService();
     const whatsAppService = new WhatsAppService();
     const gmailService = new GmailService();
-
-    // await gmailService.send({
-    //   subject: 'some sub',
-    //   html: '',
-    //   text: 'teext',
-    //   to: 'tamarimenteshashvili7@gmail.com'
-    // })
 
     // existing events in db
     const events = await commsEventService.getAll();
