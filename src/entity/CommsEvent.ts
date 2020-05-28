@@ -26,5 +26,11 @@ export default class CommsEvent {
     human: boolean;
 
     @Column()
+    result: string;
+
+    @Column()
+    server: string;
+
+    @Column()
     message: string;
 }

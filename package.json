@@ -5,23 +5,34 @@
   "main": "dist/index.js",
   "license": "Unlicense",
   "devDependencies": {
+    "@types/jest": "^25.2.3",
     "@types/node": "^14.0.5",
     "@types/pino": "^6.0.1",
+    "@types/redis": "^2.8.21",
     "concurrently": "^5.2.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   },
   "dependencies": {
+    "bee-queue": "^1.2.3",
+    "dotenv": "^8.2.0",
     "pg": "^8.2.1",
     "pino": "^6.3.0",
+    "redis": "^3.0.2",
+    "redis-cli": "^1.4.0",
+    "redis-server": "^1.2.2",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.2.0",
+    "twilio": "^3.43.1",
     "typeorm": "^0.2.24"
   },
   "scripts": {
     "build": "tsc",
+    "test": "SET \"NODE_ENV=test\" && yarn build && jest dist/test",
     "watch-ts": "tsc -w",
     "watch-node": "nodemon dist/app.js",
-    "dev": "yarn build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\""
+    "dev": "SET \"NODE_ENV=test\" && yarn build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\""
   },
   "resolutions": {
     "tslib": "1.11.2"
