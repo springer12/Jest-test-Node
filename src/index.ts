@@ -3,10 +3,11 @@ import * as dotenv from "dotenv"; // Environment vars
 import Pino from "pino"; // Logging library
 import BQ from "bee-queue" // Queue management via Redis
 import Twilio from 'twilio'; // WhatsApp library
-import { createConnection } from "typeorm"; // Database ORM
 
 // Services
-import {CommsEventService} from "./service/CommsEvent.service"
+import {CommsEventService} from "./service/CommsEvent.service";
+import { createTypeormConnection } from "./utils/createTypeormConnection";
+import {WhatsAppService} from "./service/WhatsApp.service";
 
 //import Entity
 import CommsEvent from './entity/CommsEvent';
@@ -17,14 +18,16 @@ import CommsEvent from './entity/CommsEvent';
     const logger = Pino({name: "Zenner Comms Dispatch"});
     logger.info("Starting");
 
-    const db = await createConnection();
+    // const db = await createConnection();
+    await createTypeormConnection();
     logger.info('PG connected');
 
     const commsEventService = new CommsEventService();
+    const whatsAppService = new WhatsAppService();
 
     // existing events in db
     const events = await commsEventService.getAll();
-    console.log(events.length, '<----length')
+    console.log(events.length, ' events are already registered in db')
 
     //add event in db
     const myEvent = new CommsEvent();
@@ -83,11 +86,12 @@ import CommsEvent from './entity/CommsEvent';
       let result = "SUCCESS";
       
       try {
-        let twilioResult = await twilio.messages.create({
+        let obj = {
           from: job.data.from,
           to: job.data.to,
-          body: job.data.message,
-        });
+          body: job.data.message
+        }
+        let twilioResult = await whatsAppService.send(obj);
         logger.info(twilioResult, `Sent message via Twiliio`)
       } catch (err) {
         result = "FAILED";
