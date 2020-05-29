@@ -1,15 +1,15 @@
 // Send a dummy message
 import BQ from "bee-queue"
 const bq = new BQ('subscriptions', {
-        // redis: {
-        //     url: process.env.REDIS_URL,        
-        // }
+        redis: {
+            url: process.env.REDIS_URL,        
+        }
     }
 );
 
 (async () => {
     console.log("Ready");
-    let message = "Hello from redis server";
+    let message = "Hello from redis server ------------";
     if (typeof process.argv[2] !== 'undefined') {
         message = process.argv[2];
     }

@@ -38,9 +38,9 @@ import {GmailService} from "./service/Gmail.service";
         isWorker: true,
         redis: 
         {
-          host: process.env.REDIS_HOST,
-          port: Number(process.env.REDIS_PORT),
-          // url: process.env.REDIS_URL
+          // host: process.env.REDIS_HOST,
+          // port: Number(process.env.REDIS_PORT),
+          url: process.env.REDIS_URL
         }
       })
     }catch(err){

@@ -1,44 +1,45 @@
 import { Connection } from 'typeorm';
-
-import { createTypeormConnection } from "../utils/createTypeormConnection";
+import { createTypeormConnection } from '../utils/createTypeormConnection';
 import {CommsEventService} from "../service/CommsEvent.service"
 import CommsEvent from "../entity/CommsEvent";
 
-
-let db:Connection;
-beforeAll(async () => {
-    db = await createTypeormConnection();
-});
-
-
-// complete object
-const testEventNormal = new CommsEvent();
-testEventNormal.created = new Date();
-testEventNormal.from = 'whatsapp:+13235082016';
-testEventNormal.to = 'whatsapp:+995557773417';
-testEventNormal.source = 'whatsapp';
-testEventNormal.human = false;
-testEventNormal.message = 'some message';
-testEventNormal.server = 'localhost';
-testEventNormal.result = 'SUCCESS'
-
-// object without nullable field
-const testEventWithoutHumanProp = {...testEventNormal};
-delete testEventWithoutHumanProp.human;
-
-// object without non-nullable field
-const testEventWithoutSourceProp = {...testEventNormal};
-delete testEventWithoutSourceProp.source;
+const testEvent = new CommsEvent();
+testEvent.created = new Date();
+testEvent.from = 'whatsapp:+13235082016';
+testEvent.to = 'whatsapp:+995557773417';
+testEvent.source = 'whatsapp';
+testEvent.human = false;
+testEvent.message = 'some message';
+testEvent.server = 'localhost';
+testEvent.result = 'SUCCESS'
 
 
-test('test of test', async() => {
-    const commsEventService = new CommsEventService(db);
-    expect(await(async()=> 5)()).toBe(5);
-});
+describe('CommsEventService', () => {
 
-test('addEvent', async() => {
-    const commsEventService = new CommsEventService(db);
-    expect((await commsEventService.addEvent(testEventNormal)).from).toBe(testEventNormal.from);
-    expect(await commsEventService.addEvent(testEventWithoutHumanProp)).toBe(testEventWithoutHumanProp);
-    expect(async() => await commsEventService.addEvent(testEventWithoutSourceProp)).rejects.toThrowError()
-});
+    let db:Connection;
+    let commsEventService:CommsEventService;
+
+    beforeAll(async () => {
+        db = await createTypeormConnection();
+    });
+
+    it('typeorm => getRepository', async () => {
+
+        db.getRepository = jest.fn(db.getRepository);
+        commsEventService = new CommsEventService(db);
+        expect(db.getRepository).toBeCalled()
+
+    })
+    it('CommsEventService => addEvent', async () => {
+
+        commsEventService.addEvent = jest.fn(commsEventService.addEvent);
+
+        const result = await commsEventService.addEvent(testEvent)
+        
+        expect(result).toEqual({...testEvent, id:result.id})
+        
+        expect(commsEventService.addEvent).toBeCalled()
+        expect(commsEventService.addEvent).toHaveBeenNthCalledWith(1, testEvent)
+        
+    })
+})
