@@ -38,9 +38,9 @@ import {GmailService} from "./service/Gmail.service";
         isWorker: true,
         redis: 
         {
-          // host: process.env.REDIS_HOST,
-          // port: Number(process.env.REDIS_PORT),
-          url: process.env.REDIS_URL
+          host: process.env.REDIS_HOST,
+          port: Number(process.env.REDIS_PORT),
+          // url: process.env.REDIS_URL
         }
       })
     }catch(err){
@@ -110,7 +110,7 @@ import {GmailService} from "./service/Gmail.service";
         result="FAIL"
       }
 
-      const event = await commsEventService.addEvent(job.data);
+      const event = await commsEventService.addEvent({...job.data, result});
       logger.debug(`Added event record ${event.id} to database`);
 
       return "Success";

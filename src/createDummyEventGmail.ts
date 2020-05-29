@@ -1,9 +1,9 @@
 // Send a dummy message
 import BQ from "bee-queue"
 const bq = new BQ('subscriptions', {
-        redis: {
-            url: process.env.REDIS_URL,        
-        }
+        // redis: {
+        //     url: process.env.REDIS_URL,        
+        // }
     }
 );
 
@@ -16,7 +16,8 @@ const bq = new BQ('subscriptions', {
     bq.on('ready', async () => {
         console.log('queue now ready to start doing things');
         let job = bq.createJob({
-            to: 'nini.grigalashvili@gmail.com',
+            from: 'Flight Ops @ Zenner <ops@gozenner.com>',
+            to: 'tamarimenteshashvili7@gmail.com',
             subject: 'some subject',
             message: message,
             html: '',
