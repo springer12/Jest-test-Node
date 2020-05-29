@@ -1,9 +1,13 @@
-import {CommsEventService} from "../service/CommsEvent.service"
+import { Connection } from 'typeorm';
+
 import { createTypeormConnection } from "../utils/createTypeormConnection";
+import {CommsEventService} from "../service/CommsEvent.service"
 import CommsEvent from "../entity/CommsEvent";
 
+
+let db:Connection;
 beforeAll(async () => {
-    await createTypeormConnection();
+    db = await createTypeormConnection();
 });
 
 
@@ -21,7 +25,6 @@ testEventNormal.result = 'SUCCESS'
 // object without nullable field
 const testEventWithoutHumanProp = {...testEventNormal};
 delete testEventWithoutHumanProp.human;
-console.log(testEventWithoutHumanProp);
 
 // object without non-nullable field
 const testEventWithoutSourceProp = {...testEventNormal};
@@ -29,19 +32,12 @@ delete testEventWithoutSourceProp.source;
 
 
 test('test of test', async() => {
-    const commsEventService = new CommsEventService();
+    const commsEventService = new CommsEventService(db);
     expect(await(async()=> 5)()).toBe(5);
 });
 
-test('getAll', async() => {
-    const commsEventService = new CommsEventService();
-    expect(
-        await commsEventService.getAll()
-    ).toBeDefined;
-});
-
 test('addEvent', async() => {
-    const commsEventService = new CommsEventService();
+    const commsEventService = new CommsEventService(db);
     expect((await commsEventService.addEvent(testEventNormal)).from).toBe(testEventNormal.from);
     expect(await commsEventService.addEvent(testEventWithoutHumanProp)).toBe(testEventWithoutHumanProp);
     expect(async() => await commsEventService.addEvent(testEventWithoutSourceProp)).rejects.toThrowError()

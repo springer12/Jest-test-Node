@@ -1,6 +1,6 @@
 
 //Libraries
-import Twilio from 'twilio'; // WhatsApp library
+import Twilio from 'twilio';
 
 interface SendArgInterface {
     from: string;
