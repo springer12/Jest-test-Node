@@ -1,7 +1,7 @@
 import CommsEvent from '../entity/CommsEvent'
 import { Repository, Connection } from 'typeorm';
 
-interface GmailSendArgInterface {
+interface AddEventInterface {
     created: Date,
     from: string,
     to: string,
@@ -20,7 +20,7 @@ export class CommsEventService {
         this.eventRepository = db.getRepository(CommsEvent);
     }
 
-    async addEvent(record: GmailSendArgInterface): Promise<CommsEvent>{
+    async addEvent(record: AddEventInterface): Promise<CommsEvent>{
         const {created, from, to, human, message, source, result, server} = record;
         return await this.eventRepository.save({created, from, to, human, message, source, result, server})
     }
