@@ -20,7 +20,7 @@
     "nodemailer": "^6.4.8",
     "pg": "^8.2.1",
     "pino": "^6.3.0",
-    "redis": "^3.0.2",
+    "redis": "^3.1.1",
     "redis-cli": "^1.4.0",
     "redis-server": "^1.2.2",
     "reflect-metadata": "^0.1.13",
